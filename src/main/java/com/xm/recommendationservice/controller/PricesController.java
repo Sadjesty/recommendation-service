@@ -4,12 +4,11 @@ import com.xm.recommendationservice.domain.CryptoNormalizedRange;
 import com.xm.recommendationservice.domain.CryptoPrice;
 import com.xm.recommendationservice.service.PriceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -22,17 +21,17 @@ public class PricesController {
 
     @GetMapping("/{name}/allMonthPrices")
     public List<CryptoPrice> getAllMonthPrices(@PathVariable String name) throws IOException {
-        return priceService.getAllPricesForMonth(name);
+        return priceService.getAllPrices(name);
     }
 
     @GetMapping("/{name}/minMonthPrice")
     public CryptoPrice getMinMonthPrice(@PathVariable String name) throws IOException {
-        return priceService.getMinMonthPrice(name);
+        return priceService.getMinPrice(name);
     }
 
     @GetMapping("/{name}/maxMonthPrice")
     public CryptoPrice getMaxMonthPrice(@PathVariable String name) throws IOException {
-        return priceService.getMaxMonthPrice(name);
+        return priceService.getMaxPrice(name);
     }
 
     @GetMapping("/{name}/oldestMonthPrice")
@@ -48,5 +47,12 @@ public class PricesController {
     @GetMapping("/allCryptos")
     public Set<CryptoNormalizedRange> getAllCryptos() throws IOException {
         return priceService.getAllCryptos();
+    }
+
+    @GetMapping("/bestCrypto")
+    public CryptoNormalizedRange getBestCrypto(@RequestParam(value = "date")
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                               LocalDate date) throws IOException {
+        return priceService.getCryptoWithHighestNormalizedRangeByDate(date);
     }
 }
