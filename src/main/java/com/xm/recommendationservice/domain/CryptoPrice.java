@@ -1,4 +1,4 @@
-package com.xm.recommendationservice.entity;
+package com.xm.recommendationservice.domain;
 
 import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.bean.CsvBindByName;

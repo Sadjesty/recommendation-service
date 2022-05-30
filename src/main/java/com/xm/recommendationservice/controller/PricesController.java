@@ -1,6 +1,7 @@
 package com.xm.recommendationservice.controller;
 
-import com.xm.recommendationservice.entity.CryptoPrice;
+import com.xm.recommendationservice.domain.CryptoNormalizedRange;
+import com.xm.recommendationservice.domain.CryptoPrice;
 import com.xm.recommendationservice.service.PriceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/prices")
@@ -41,5 +43,10 @@ public class PricesController {
     @GetMapping("/{name}/newestMonthPrice")
     public CryptoPrice getNewestMonthPrice(@PathVariable String name) throws IOException {
         return priceService.getNewestMonthPrice(name);
+    }
+
+    @GetMapping("/allCryptos")
+    public Set<CryptoNormalizedRange> getAllCryptos() throws IOException {
+        return priceService.getAllCryptos();
     }
 }
