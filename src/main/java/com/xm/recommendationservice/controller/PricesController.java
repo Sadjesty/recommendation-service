@@ -2,6 +2,7 @@ package com.xm.recommendationservice.controller;
 
 import com.xm.recommendationservice.domain.CryptoNormalizedRange;
 import com.xm.recommendationservice.domain.CryptoPrice;
+import com.xm.recommendationservice.exception.ServiceException;
 import com.xm.recommendationservice.service.PriceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +28,7 @@ public class PricesController {
     public List<CryptoPrice> getAllPrices(
             @Parameter(description = "Currency symbol", required = true, example = "BTC")
             @PathVariable String symbol)
-            throws IOException {
+            throws ServiceException {
         return priceService.getAllPrices(symbol);
     }
 
@@ -36,7 +36,7 @@ public class PricesController {
     @Operation(summary = "Min price", description = "Get minimum price of the currency")
     public CryptoPrice getMinMonthPrice(
             @Parameter(description = "Currency symbol", required = true, example = "BTC")
-            @PathVariable String name) throws IOException {
+            @PathVariable String name) throws ServiceException {
         return priceService.getMinPrice(name);
     }
 
@@ -44,7 +44,7 @@ public class PricesController {
     @Operation(summary = "Max price", description = "Get maximum price of the currency")
     public CryptoPrice getMaxMonthPrice(
             @Parameter(description = "Currency symbol", required = true, example = "BTC")
-            @PathVariable String name) throws IOException {
+            @PathVariable String name) throws ServiceException {
         return priceService.getMaxPrice(name);
     }
 
@@ -52,7 +52,7 @@ public class PricesController {
     @Operation(summary = "Oldest price", description = "Get oldest price of the currency")
     public CryptoPrice getOldestMonthPrice(
             @Parameter(description = "Currency symbol", required = true, example = "BTC")
-            @PathVariable String name) throws IOException {
+            @PathVariable String name) throws ServiceException {
         return priceService.getOldestMonthPrice(name);
     }
 
@@ -60,14 +60,14 @@ public class PricesController {
     @Operation(summary = "Newest price", description = "Get newest price of the currency")
     public CryptoPrice getNewestMonthPrice(
             @Parameter(description = "Currency symbol", required = true, example = "BTC")
-            @PathVariable String name) throws IOException {
+            @PathVariable String name) throws ServiceException {
         return priceService.getNewestMonthPrice(name);
     }
 
     @GetMapping("/normalizedRangeCryptos")
     @Operation(summary = "Normalized Range Cryptos", description = "Descending sorted list of all the cryptos, " +
             "comparing the normalized range")
-    public Set<CryptoNormalizedRange> getAllCryptosWithNormalizedRange() throws IOException {
+    public Set<CryptoNormalizedRange> getAllCryptosWithNormalizedRange() throws ServiceException {
         return priceService.getAllCryptosWithNormalizedRange();
     }
 
@@ -77,7 +77,7 @@ public class PricesController {
             @Parameter(description = "Date", required = true, example = "2022-02-05")
             @RequestParam(value = "date")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate date) throws IOException {
+            LocalDate date) throws ServiceException {
         return priceService.getCryptoWithHighestNormalizedRangeByDate(date);
     }
 }
