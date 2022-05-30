@@ -1,19 +1,35 @@
 package com.xm.recommendationservice.entity;
 
+import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Data
-//todo ADD DTO WITH LOCALDATETIME INSTAED TIMESTAMP
 public class CryptoPrice {
 
     @CsvBindByName(column = "symbol")
     private String currencySymbol;
-    @CsvBindByName(column = "timestamp")
-    private String priceTime;
+    @CsvCustomBindByName(column = "timestamp", converter = TimestampToLocalDateTimeConverter.class)
+    private LocalDateTime priceTime;
     @CsvBindByName(column = "price")
     private BigDecimal priceValue;
+
+    @NoArgsConstructor
+    public static class TimestampToLocalDateTimeConverter
+            extends AbstractBeanField<LocalDateTime, String> {
+
+        @Override
+        protected LocalDateTime convert(String value) {
+            long epochMilli = Long.parseLong(value);
+            return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), ZoneId.systemDefault());
+        }
+    }
 
 }
