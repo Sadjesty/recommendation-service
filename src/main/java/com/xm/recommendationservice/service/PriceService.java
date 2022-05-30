@@ -52,13 +52,13 @@ public class PriceService {
         File directory = new ClassPathResource(FOLDER_NAME).getFile();
         File[] files = getAllSuitableFiles(directory);
         if (files != null) {
-            return getCryptoNormalizedRangesSetInDescedingOrder(files);
+            return getCryptoNormalizedRangesSetInDescendingOrder(files);
         } else {
             return null;
         }
     }
 
-    private Set<CryptoNormalizedRange> getCryptoNormalizedRangesSetInDescedingOrder(File[] files) throws IOException {
+    private Set<CryptoNormalizedRange> getCryptoNormalizedRangesSetInDescendingOrder(File[] files) throws IOException {
         Comparator<CryptoNormalizedRange> comparator =
                 Comparator.comparing(CryptoNormalizedRange::getNormalizedRange).reversed();
         Set<CryptoNormalizedRange> allCryptos = new TreeSet<>(comparator);
