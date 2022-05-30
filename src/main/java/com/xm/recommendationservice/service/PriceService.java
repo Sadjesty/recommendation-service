@@ -46,7 +46,7 @@ public class PriceService {
         return getAllPrices(symbol).stream().max(Comparator.comparing(CryptoPrice::getPriceTime)).orElseThrow();
     }
 
-    public Set<CryptoNormalizedRange> getAllCryptos() throws IOException {
+    public Set<CryptoNormalizedRange> getAllCryptosWithNormalizedRange() throws IOException {
         File directory = new ClassPathResource(FOLDER_NAME).getFile();
         File[] files = getAllSuitableFiles(directory);
         if (files != null) {
