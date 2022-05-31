@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-service
+  labels:
+    app: recommendation-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: recommendation-service
+  template:
+    metadata:
+      labels:
+        app: recommendation-service
+    spec:
+      containers:
+        - name: recommendation-service
+          image: sadjesty/recommendation-service:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: spring.mvc.servlet.path
+              value: /recommendation-service
