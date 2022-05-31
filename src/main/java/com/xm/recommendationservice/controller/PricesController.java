@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -83,5 +84,21 @@ public class PricesController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date) throws ServiceException {
         return priceService.getCryptoWithHighestNormalizedRangeByDate(date);
+    }
+
+    @GetMapping("/{symbol}/allPricesInPeriod")
+    @Operation(summary = "All prices for currency in period", description = "Get all prices for this currency for specific period")
+    public List<CryptoPrice> allPricesInPeriod(
+            @Parameter(description = "Currency symbol", required = true, example = "BTC")
+            @PathVariable String symbol,
+            @Parameter(description = "atDate", required = true, example = "2022-01-01T10:00:00")
+            @RequestParam(value = "atDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                    LocalDateTime atDate,
+            @Parameter(description = "toDate", required = true, example = "2022-01-28T13:00:00")
+            @RequestParam(value = "toDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                    LocalDateTime toDate) throws ServiceException {
+        return priceService.getAllPricesInPeriod(symbol, atDate, toDate);
     }
 }

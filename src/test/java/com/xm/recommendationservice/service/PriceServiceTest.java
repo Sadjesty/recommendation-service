@@ -32,6 +32,8 @@ class PriceServiceTest {
     private static final CryptoPrice BTC_PRICE_1 = new CryptoPrice(BTC, LocalDateTime.parse("2022-01-01T10:00:00"), BigDecimal.valueOf(46813.21));
     private static final String NEW_CRYPTO = UUID.randomUUID().toString();
     public static final LocalDate LOCAL_DATE = LocalDate.parse("2022-01-01");
+    public static final LocalDateTime AT_DATE = LocalDateTime.parse("2022-01-01T12:00:00");
+    public static final LocalDateTime TO_DATE = LocalDateTime.parse("2022-01-01T16:30:00");
 
     @Mock
     private Logger log;
@@ -99,5 +101,15 @@ class PriceServiceTest {
     void testGetCryptoWithHighestNormalizedRangeByDateOk() throws ServiceException {
         CryptoNormalizedRange result = priceService.getCryptoWithHighestNormalizedRangeByDate(LOCAL_DATE);
         Assertions.assertEquals(BTC_NORMALIZED_RANGE, result);
+    }
+
+    @Test
+    void getAllPricesInPeriodOk() throws ServiceException {
+        List<CryptoPrice> expected = Arrays.asList(
+                BTC_PRICE_2,
+                BTC_PRICE_3
+        );
+        List<CryptoPrice> result = priceService.getAllPricesInPeriod(BTC, AT_DATE, TO_DATE);
+        Assertions.assertEquals(expected, result);
     }
 }

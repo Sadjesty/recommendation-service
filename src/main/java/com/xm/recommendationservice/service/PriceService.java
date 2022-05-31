@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +18,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +66,21 @@ public class PriceService {
         } else {
             throw new ServiceException(ErrorCode.COMMON_IO_EXCEPTION);
         }
+    }
+
+    public List<CryptoPrice> getAllPricesInPeriod(String symbol, LocalDateTime atDate, LocalDateTime toDate) throws ServiceException {
+        File file = getFileFromSymbol(symbol);
+        List<CryptoPrice> answer = getAllPrices(file).stream()
+                .filter(cryptoPrice ->
+                        {
+                            LocalDateTime priceDate = cryptoPrice.getPriceTime();
+                            return priceDate.isAfter(atDate) && priceDate.isBefore(toDate);
+                        }
+                ).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(answer)) {
+            throw new ServiceException(ErrorCode.NO_SUCH_ELEMENT);
+        }
+        return answer;
     }
 
     public CryptoNormalizedRange getCryptoWithHighestNormalizedRangeByDate(LocalDate date) throws ServiceException {
