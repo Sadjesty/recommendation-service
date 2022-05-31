@@ -3,6 +3,7 @@ package com.xm.recommendationservice.domain;
 import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CryptoPrice {
 
     @CsvBindByName(column = "symbol")
